@@ -1,16 +1,26 @@
-const cards=document.getElementsByClassName("card");
-console.log(cards)
+let about = document.getElementById("about")
 
-for (let i=0; i<cards.length; i++){
-  cards[i].classList.add("hide");
-}
+$(document).ready(()=>{
+  $(".card").on("mouseenter",e=>{
 
-for (let i=0; i<cards.length; i++){
-  setTimeout(addAnimation.bind(null,i),i*400);
-}
+    if ($(e.currentTarget).data().name ==="notes" ){
+      about.innerHTML=`<p id="about"><span style="font-weight:bold;">NotesFromTheRoad</span> -
+        адаптивная верстка с использованием FlexBox и jQuery</p>`
+    } else if ($(e.currentTarget).data().name ==="sky" ){
+      about.innerHTML=`<p id="about"><span style="font-weight:bold;">SkyPype</span> -
+        использование технологии React и Redux для иммитации мессенджера</p>`
+    } else if ($(e.currentTarget).data().name ==="blog" ){
+        about.innerHTML=`<p id="about"><span style="font-weight:bold;">SimpleBlog</span> -
+         пример использования фреймворка React</p>`
+    } else {
+      about.innerHTML=`<p id="about"><span style="font-weight:bold;">Ravenous</span> -
+       SPA на React и Yelp API</p>`
+    }
 
+        $(".info").show();
 
-function addAnimation(i) {
-  console.log(i)
-  cards[i].classList.remove("hide");
-}
+        $(".info").find("p").animate({
+          marginLeft:'5%'
+        },400)
+    })
+});

@@ -5,9 +5,9 @@
 <head>
   <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
+  <title>TomDev Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
@@ -16,38 +16,47 @@
 
 <body>
 
+
+
   <div class="projects-container">
-      <div class="projects">
-        
+
+      <div class="info">
+        <p style="text-align:center"
+        id="about"><span style="font-weight:bold">Портфолио</span></p>
+      </div>
+
+      <div class="projects animated slideInDown">
+
         <div class="col">
-          <div class="blog">
-              <img src="img/simpleBlog.png" alt="">
-              <p>Some text about simple blog</p>
+          <div data-name="blog" class="card big">
+              <a href="https://tomdev24.github.io/simpleBlog/" target="_blank"><img src="img/simpleBlog.png" alt=""></a>
           </div>
 
-          <div class="ravenous">
-              <img src="img/ravenous.png" alt="">
-              <p></p>
+
+          <div data-name="ravenous" class="card small">
+              <a href="https://tomdev24.github.io/ravenous/" target="_blank"><img src="img/ravenous.png" alt=""></a>
+
           </div>
         </div>
 
         <div class="col">
-          <div class="notes">
-              <img src="img/notes.png" alt="">
-              <p></p>
+          <div data-name="notes" class="card small">
+              <a href="https://tomdev24.github.io/notesFromTheRoad" target="_blank"><img src="img/notes.png" alt=""></a>
+
           </div>
 
-          <div class="sky">
-              <img src="img/sky.png" alt="">
-              <p></p>
+          <div data-name="sky" class="card big">
+              <a href="https://tomdev24.github.io/skypype/" target="_blank">  <img src="img/sky.png" alt=""></a>
           </div>
         </div>
 
       </div>
   </div>
 
-
-
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
   <script src="script.js"></script>
 </body>
 
