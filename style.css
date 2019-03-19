@@ -101,11 +101,22 @@ body{
   }
 }
 
-@media (max-width:800px){
+@media (max-width: 480px){
   .projects{
-    width: 1000px;
+    flex-direction: column;
+    padding: 0;
+    box-shadow: 0;
+    justify-content: center;
+    background-color: transparent;
+  }
+  .card{
+    height: 150px !important;
+
+  }
+  .card img{
+    opacity: 1;
   }
   .info{
-    display: none;
+      display: none;
   }
 }
