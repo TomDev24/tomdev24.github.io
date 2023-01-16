@@ -1,0 +1,1 @@
+command! ZaZa !echo "bobo"
