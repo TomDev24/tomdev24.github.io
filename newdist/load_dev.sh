@@ -10,7 +10,7 @@ fi
 read -p 'would you like to set vimrc from git? [y/n] :' ans
 
 if [ "$ans" = "y" ]; then
-	curl https://tomdev24.github.io/media/newdist/vimrc --output $HOME/.vimrc
+	curl https://tomdev24.github.io/newdist/vimrc --output $HOME/.vimrc
 	#vim-plug installation
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim	
@@ -19,9 +19,9 @@ fi
 read -p 'would you like to add snippets, ftplugin, plugin from git? [y/n] :' ans
 
 if [ "$ans" = "y" ]; then
-	curl https://tomdev24.github.io/media/newdist/ftplugin.tar --output ftplugin.tar
-	curl https://tomdev24.github.io/media/newdist/plugin.tar --output plugin.tar
-	curl https://tomdev24.github.io/media/newdist/snippets.tar --output snippets.tar
+	curl https://tomdev24.github.io/newdist/ftplugin.tar --output ftplugin.tar
+	curl https://tomdev24.github.io/newdist/plugin.tar --output plugin.tar
+	curl https://tomdev24.github.io/newdist/snippets.tar --output snippets.tar
 	
 	tar -xvf ftplugin.tar -C $HOME/.vim
 	tar -xvf plugin.tar -C $HOME/.vim
@@ -48,8 +48,8 @@ echo 'Install Vscode dont forget to add Vim plugin to it!'
 echo '~/.config/Code/User  such a wonderful path by the way'
 echo 'Now i will put settigns.json and keybindings.json, for better terminal in vscode'
 echo; echo; 
-curl https://tomdev24.github.io/media/newdist/keybindings.json --output ~/.config/Code/User/keybindings.json 
-curl https://tomdev24.github.io/media/newdist/settings.json --output ~/.config/Code/User/settings.json 
+curl https://tomdev24.github.io/newdist/keybindings.json --output ~/.config/Code/User/keybindings.json 
+curl https://tomdev24.github.io/newdist/settings.json --output ~/.config/Code/User/settings.json 
 echo '-------------'
 
 #wajig large
