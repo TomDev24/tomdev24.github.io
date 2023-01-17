@@ -46,11 +46,14 @@ fi
 echo '\n-------------'
 echo 'Install Vscode dont forget to add Vim plugin to it!'
 echo '~/.config/Code/User  such a wonderful path by the way'
-echo 'Now i will put settigns.json and keybindings.json, for better terminal in vscode'
-echo; echo; 
-curl https://tomdev24.github.io/newdist/keybindings.json --output ~/.config/Code/User/keybindings.json 
-curl https://tomdev24.github.io/newdist/settings.json --output ~/.config/Code/User/settings.json 
 echo '-------------'
+
+read -p 'add settings.json and keybindings.json to VSCode config? [y/n] :' ans
+
+if [ "$ans" = "y" ]; then
+	curl https://tomdev24.github.io/newdist/keybindings.json --output ~/.config/Code/User/keybindings.json 
+	curl https://tomdev24.github.io/newdist/settings.json --output ~/.config/Code/User/settings.json 
+fi
 
 #wajig large
 #apt-get remove --purge package
