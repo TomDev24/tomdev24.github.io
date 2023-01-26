@@ -6,6 +6,7 @@ read -p '(You can run wihout sudo)Make sure that you are running this command in
 if [ "$ans" != "y" ]; then exit 1 ; fi
 
 sudo apt-get install curl keepass2 vim-runtime vim-gui-common tree
+#net-tools
 
 #https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 read -p 'Do you want to install Git Cli? [y/n] :' ans
@@ -70,6 +71,7 @@ if [ "$ans" = "y" ]; then
 	curl https://tomdev24.github.io/newdist/settings.json --output ~/.config/Code/User/settings.json 
 fi
 
+#https://www.dropbox.com/install-linux
 read -p 'Do you want to install and configure DropBox ? [y/n] :' ans
 if [ "$ans" = "y" ]; then
 	cd $HOME && wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
