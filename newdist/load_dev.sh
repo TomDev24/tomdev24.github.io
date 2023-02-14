@@ -98,3 +98,8 @@ echo 'Bookmarks in firefox Telegram/Google/Notion/Github'
 
 ##https://github.com/charmbracelet/glow
 ##probably very good thing, check installation on ubuntu
+##https://github.com/smallhadroncollider/taskell
+##kanban very good thing
+
+##pandoc for rendering markdown and latex!
+## sudo apt install pandoc // 158mb
