@@ -2,11 +2,17 @@
 
 #wget are not preinstalled on Mac
 
+#VirtualBox installation guide
+#I messed up and didnt sign kernel in MOK
+#https://phoenixnap.com/kb/install-virtualbox-on-ubuntu
+#Here is docker, but find a better link from official website
+#https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
+
 read -p '(You can run wihout sudo)Make sure that you are running this command in sudo? [y/n] :' ans
 if [ "$ans" != "y" ]; then exit 1 ; fi
 
 sudo apt-get install curl keepass2 vim-runtime vim-gui-common tree
-#net-tools
+#sudo apt-get net-tools
 
 #https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 read -p 'Do you want to install Git Cli? [y/n] :' ans
@@ -88,3 +94,7 @@ echo 'Bookmarks in firefox Telegram/Google/Notion/Github'
 #aptitude search '~i!~M'
 #//How to run postgress
 #sudo -u postgres -i
+
+
+##https://github.com/charmbracelet/glow
+##probably very good thing, check installation on ubuntu
