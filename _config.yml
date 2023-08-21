@@ -21,9 +21,8 @@
 future: false # GitHub Pages will publish future posts if this isn't set to false
 
 title: TomDev24 Blog
-author: Chad Baldwin
-  #email: blog@chadbaldwin.net
-email: your-email@example.com
+author: TomDev
+#email: your-email@example.com
 description: sic parvis magna
 #description: >- # this means to ignore newlines until "baseurl:"
 #  Write an awesome description for your new site here. You can edit this
