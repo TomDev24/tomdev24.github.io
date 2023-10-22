@@ -5,15 +5,8 @@ lang: en
 ref: about_page
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
-
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+> I am part of that power which eternally wills evil and eternally works good.  
+> <strong>Johann Wolfgang von Goethe. Faust</strong>
 
 
-[jekyll-organization]: https://github.com/jekyll
+[Or the other way around?](https://kazan.hh.ru/applicant/resumes/view?resume=3fa5a41eff06500c570039ed1f364d4441426e)
