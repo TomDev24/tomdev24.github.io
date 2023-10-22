@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "Как сделать"
+categories: programming
+tags: how-to
+lang: ru
+ref: how_to_make
+---
+
+## шаг 1
+
+## шаг 2

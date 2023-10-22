@@ -1,0 +1,21 @@
+---
+layout: page
+title: Записи
+lang: ru
+ref: archive_tag
+---
+
+<a href="/pages/ru/archive/archive-date.html">Сортировать по дате</a> |
+<a href="/pages/ru/archive/archive-category.html">Сортировать по категориям</a> |
+<a href="/pages/ru/archive/archive-tag.html">Сортировать по тегам</a>
+
+
+{% for tag in site.tags %}
+<h3>{{- tag[0] -}}</h3>
+<ul>
+  {% assign posts=tag[1] | where:"lang", page.lang %}
+  {%- for post in posts %}
+  <li><a href="{{ post.url }}">{{ post.date | date: "%b %Y" }} - {{ post.title }}</a></li>
+  {%- endfor %}
+</ul>
+{%- endfor %}

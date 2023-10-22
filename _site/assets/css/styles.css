@@ -1,0 +1,19 @@
+ul.lang-selector {
+  text-align: center;
+}
+
+ul.lang-selector li {
+  display: inline;
+  font-size: 22px;
+}
+
+.lang-switch {
+  color: black !important;
+}
+
+.en:lang(en), .ru:lang(ru) {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/*# sourceMappingURL=styles.css.map */

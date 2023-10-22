@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "How to make"
+categories: programming
+tags: how-to
+lang: en
+ref: how_to_make
+---
+
+## Step one
+
+## Step two

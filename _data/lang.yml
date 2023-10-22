@@ -1,0 +1,15 @@
+nav:
+  en:
+    about:
+      title: "About me"
+      url:   "/pages/en/about"
+    posts:
+      title: "Blog Posts"
+      url: "/pages/en/archive/archive-category"
+  ru:
+    about:
+      title: "Обо мне"
+      url:   "/pages/ru/about"
+    posts:
+      title: "Записи"
+      url: "/pages/ru/archive/archive-category"

@@ -1,0 +1,13 @@
+## Making Jekyll multilingual
+
+https://sylvaindurand.org/making-jekyll-multilingual/
+
+I didnt use this method, but it was helpfull: https://www.klaasnotfound.com/2017/02/16/proper-multilingual-site-with-github-pages-and-jekyll/
+
+## Minima layouts
+
+https://github.com/jekyll/minima/tree/d0cedd9080ecc4d33aaa573620a4d8658c5ccca8
+
+## How to write your own styles to a jekyll site
+
+https://jekyllrb.com/docs/step-by-step/07-assets/

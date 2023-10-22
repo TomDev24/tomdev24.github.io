@@ -22,7 +22,7 @@ future: false # GitHub Pages will publish future posts if this isn't set to fals
 
 title: TomDev24 Blog
 author: TomDev
-#email: your-email@example.com
+email: tommog2499@gmail.com
 description: sic parvis magna
 #description: >- # this means to ignore newlines until "baseurl:"
 #  Write an awesome description for your new site here. You can edit this
@@ -31,7 +31,7 @@ description: sic parvis magna
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
-#github_username:  jekyll
+github_username:  TomDev24
 
 # Build settings
 theme: minima
@@ -47,6 +47,7 @@ minima:
 header_pages:
   - about.markdown
   - archive/archive-category.html
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
