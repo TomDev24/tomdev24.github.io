@@ -1,0 +1,49 @@
+<p>Сегодня мы рассмотрим алгоритм, который (возможно) впервые был использован в игре Wolfenstein 3D 1992 года.</p>
+
+<p>Ray casting можно перевести как “бросание лучей” и это на самом деле достаточно хорошее описание. По сути, весь
+алгоритм сводится к тому, что мы бросаем N-ое количество лучей и на основание расстояния каждого луча отображаем вертикальную линию.</p>
+
+<p>Итак, наши действующие лица:</p>
+<ul>
+  <li>2D плоскоcть (карта)</li>
+  <li>Игрок который может передвигаться по 2D плоскоcти</li>
+</ul>
+
+<p>Для простоты, карту будем представлять в виде 2-мерного массива 10 на 10 (хотя есть варианты по оптимальнее) где 1 и 0 означают:<br />
+1 - ячейка заполнена
+0 - пустое место</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">world_map</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>Размер “ячейки” возьмем за 80 пикселей (она у нас квадратная). Так как у нас карта 10x10 ячеек, удобно сделать так, чтобы размер экран был
+800x800(то есть мы просто домножили на размер ячейки)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">"</span><span class="s">screen_w</span><span class="sh">"</span> <span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">screen_h</span><span class="sh">"</span> <span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">fps</span><span class="sh">'</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">tile</span><span class="sh">'</span> <span class="p">:</span> <span class="mi">80</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Базовые вещи, связанные с pygame я опускаю. Cоздав игровой цикл, поместим внутри него функцию, которая будет отрисовывать карту</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">draw_map</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">world_map</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">world_map</span><span class="p">[</span><span class="n">y</span><span class="p">])):</span>
+            <span class="k">if</span> <span class="n">world_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="nf">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="sh">'</span><span class="s">grey</span><span class="sh">'</span><span class="p">],</span> \
+                    <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">y</span> <span class="o">*</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+

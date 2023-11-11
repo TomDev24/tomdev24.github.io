@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Псевдо 3D с помощью Raycasting | TomDev24 Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Псевдо 3D с помощью Raycasting" />
+<meta name="author" content="TomDev" />
+<meta property="og:locale" content="ru" />
+<meta name="description" content="Сегодня мы рассмотрим алгоритм, который (возможно) впервые был использован в игре Wolfenstein 3D 1992 года." />
+<meta property="og:description" content="Сегодня мы рассмотрим алгоритм, который (возможно) впервые был использован в игре Wolfenstein 3D 1992 года." />
+<link rel="canonical" href="/programming/2021/01/20/raycast_ru.html" />
+<meta property="og:url" content="/programming/2021/01/20/raycast_ru.html" />
+<meta property="og:site_name" content="TomDev24 Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-20T00:00:00+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Псевдо 3D с помощью Raycasting" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"TomDev"},"dateModified":"2021-01-20T00:00:00+03:00","datePublished":"2021-01-20T00:00:00+03:00","description":"Сегодня мы рассмотрим алгоритм, который (возможно) впервые был использован в игре Wolfenstein 3D 1992 года.","headline":"Псевдо 3D с помощью Raycasting","mainEntityOfPage":{"@type":"WebPage","@id":"/programming/2021/01/20/raycast_ru.html"},"url":"/programming/2021/01/20/raycast_ru.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="/assets/css/styles.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="TomDev24 Blog" /></head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">TomDev24 Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+	  
+    	  <a class="page-link" href="/pages/ru/about">Обо мне</a>
+  	  
+    	  <a class="page-link" href="/pages/ru/archive/archive-category">Записи</a>
+  	  
+        </div>
+      </nav></div>
+</header>
+
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <ul class="lang-selector">
+
+
+  <li>
+    <a href="/programming/2021/01/20/raycast_ru.html" class="lang-switch ru">ru</a>
+  </li>
+
+</ul>
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Псевдо 3D с помощью Raycasting</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2021-01-20T00:00:00+03:00" itemprop="datePublished">Jan 20, 2021
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Сегодня мы рассмотрим алгоритм, который (возможно) впервые был использован в игре Wolfenstein 3D 1992 года.</p>
+
+<p>Ray casting можно перевести как “бросание лучей” и это на самом деле достаточно хорошее описание. По сути, весь
+алгоритм сводится к тому, что мы бросаем N-ое количество лучей и на основание расстояния каждого луча отображаем вертикальную линию.</p>
+
+<p>Итак, наши действующие лица:</p>
+<ul>
+  <li>2D плоскоcть (карта)</li>
+  <li>Игрок который может передвигаться по 2D плоскоcти</li>
+</ul>
+
+<p>Для простоты, карту будем представлять в виде 2-мерного массива 10 на 10 (хотя есть варианты по оптимальнее) где 1 и 0 означают:<br />
+1 - ячейка заполнена
+0 - пустое место</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">world_map</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>Размер “ячейки” возьмем за 80 пикселей (она у нас квадратная). Так как у нас карта 10x10 ячеек, удобно сделать так, чтобы размер экран был
+800x800(то есть мы просто домножили на размер ячейки)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">"</span><span class="s">screen_w</span><span class="sh">"</span> <span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">screen_h</span><span class="sh">"</span> <span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">fps</span><span class="sh">'</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">tile</span><span class="sh">'</span> <span class="p">:</span> <span class="mi">80</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Базовые вещи, связанные с pygame я опускаю. Cоздав игровой цикл, поместим внутри него функцию, которая будет отрисовывать карту</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">draw_map</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">world_map</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">world_map</span><span class="p">[</span><span class="n">y</span><span class="p">])):</span>
+            <span class="k">if</span> <span class="n">world_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="nf">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="sh">'</span><span class="s">grey</span><span class="sh">'</span><span class="p">],</span> \
+                    <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">y</span> <span class="o">*</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+
+  </div><a class="u-url" href="/programming/2021/01/20/raycast_ru.html" hidden></a>
+</article>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">TomDev24 Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">TomDev</li><li><a class="u-email" href="mailto:tommog2499@gmail.com">tommog2499@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/TomDev24"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">TomDev24</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>sic parvis magna</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+---
+layout: page
+title: Blog Posts
+lang: en
+ref: archive_date
+---
+
+<a href="/pages/en/archive/archive-date.html">Sort by date</a> |
+<a href="/pages/en/archive/archive-category.html">Sort by category</a> |
+<a href="/pages/en/archive/archive-tag.html">Sort by tag</a>
+
+{%- assign allposts = site.posts | sort_natural: "date" | reverse %}
+{%- assign postsByYearMonth = allposts | group_by_exp:"allposts", "allposts.date | date: '%Y %B'"  %}
+
+{%- for yearMonth in postsByYearMonth %}
+<h3>{{ yearMonth.name }}</h3>
+<ul>
+  {% assign posts=yearMonth.items | where:"lang", page.lang %}
+  {%- for post in posts %}
+  <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+  {%- endfor %}
+</ul>
+{%- endfor %}
