@@ -21,8 +21,9 @@
 future: false # GitHub Pages will publish future posts if this isn't set to false
 
 title: TomDev24 Blog
-author: TomDev
-email: tommog2499@gmail.com
+author:
+        name: TomDev
+        email: tommog2499@gmail.com
 description: sic parvis magna
 #description: >- # this means to ignore newlines until "baseurl:"
 #  Write an awesome description for your new site here. You can edit this
@@ -31,14 +32,14 @@ description: sic parvis magna
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
-github_username:  TomDev24
+#github_username:  TomDev24
 
 # Build settings
 theme: minima
 minima:
   skin: dark
-  #social_links:
-  #   - { platform: github,  user_url: "https://github.com/jekyll/jekyll" }
+  social_links:
+     - { platform: github,  user_url: "https://github.com/TomDev24" }
   #  - { platform: twitter, user_url: "https://twitter.com/jekyllrb" }
 
 #plugins:

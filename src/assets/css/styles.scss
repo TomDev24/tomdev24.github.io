@@ -1,3 +1,23 @@
 ---
 ---
-@import "main";
+@import
+  "minima/skins/{{ site.minima.skin | default: 'classic' }}",
+  "minima/initialize";
+
+ul.lang-selector {
+  text-align: center;
+}
+
+ul.lang-selector li {
+  display: inline;
+  font-size: 22px;
+}
+
+.lang-switch {
+  color: #A6A6A6 !important;
+}
+
+.en:lang(en), .ru:lang(ru) {
+  font-weight: bold;
+  text-decoration: underline;
+}

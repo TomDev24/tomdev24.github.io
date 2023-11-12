@@ -744,22 +744,5 @@ table td {
     width: calc(50% - (30px / 2));
   }
 }
-ul.lang-selector {
-  text-align: center;
-}
 
-ul.lang-selector li {
-  display: inline;
-  font-size: 22px;
-}
-
-.lang-switch {
-  color: #A6A6A6 !important;
-}
-
-.en:lang(en), .ru:lang(ru) {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-/*# sourceMappingURL=styles.css.map */
+/*# sourceMappingURL=style.css.map */
