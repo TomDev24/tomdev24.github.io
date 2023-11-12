@@ -2,6 +2,7 @@ jekyll build
 mkdir src
 mv ./* ./src
 mv src/_site/* .
+mv src/.nojekyll .
 
 git add -A
 git commit -m "new upload"
