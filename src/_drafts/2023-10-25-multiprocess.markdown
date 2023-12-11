@@ -1,49 +1,63 @@
 ---
 layout: post
-title:  "'Postman не нужен, родной' или используем cURL для API запросов"
+title:  "multiprocess"
 categories: programming
 lang: ru
 ref: curl_postman
 ---
 
- I'll explain it more in details again later, but first of all, I believe it is important to define the difference between concurrency and parallelism.
+## Erlang concurrency, parallelism and virtual machine
+I believe it is important to define the difference between concurrency and parallelism.
 
-In many places both words refer to the same concept. They are often used as two different ideas in the context of Erlang. For many Erlangers, concurrency refers to the idea of having many actors running independently, but not necessarily all at the same time. Parallelism is having actors running exactly at the same time. I will say that there doesn't seem to be any consensus on such definitions around various areas of computer science, but I will use them in this manner in this text. Don't be surprised if other sources or people use the same terms to mean different things.
+For many Erlangers, concurrency refers to the idea of having many actors running independently, but not necessarily all at the same time.
+Parallelism is having actors running exactly at the same time. 
 
-This is to say Erlang had concurrency from the beginning, even when everything was done on a single core processor in the '80s. Each Erlang process would have its own slice of time to run, much like desktop applications did before multi-core systems.
+This is to say Erlang had concurrency from the beginning, even when everything was done on a single core processor in the '80s.
+Each Erlang process would have its own slice of time to run, much like desktop applications did before multi-core systems.
 
-Parallelism was still possible back then; all you needed to do was to have a second computer running the code and communicating with the first one. Even then, only two actors could be run in parallel in this setup. Nowadays, multi-core systems allows for parallelism on a single computer (with some industrial chips having many dozens of cores) and Erlang takes full advantage of this possibility.
+Parallelism was still possible back then; all you needed to do was to have a second computer running the code and communicating with the first one. 
+Even then, only two actors could be run in parallel in this setup. Nowadays, multi-core systems allows for parallelism on a single computer
+(with some industrial chips having many dozens of cores) and Erlang takes full advantage of this possibility.
 
-The distinction between concurrency and parallelism is important to make, because many programmers hold the belief that Erlang was ready for multi-core computers years before it actually was. Erlang was only adapted to true symmetric multiprocessing in the mid 2000s and only got most of the implementation right with the R13B release of the language in 2009. Before that, SMP often had to be disabled to avoid performance losses. To get parallelism on a multicore computer without SMP, you'd start many instances of the VM instead.
+The distinction between concurrency and parallelism is important to make, because many programmers hold the belief that Erlang was ready for multi-core computers years before
+it actually was. Erlang was only adapted to true symmetric multiprocessing in the mid 2000s and only got most of the implementation right
+with the R13B release of the language in 2009
 
-An interesting fact is that because Erlang concurrency is all about isolated processes, it took no conceptual change at the language level to bring true parallelism to the language. All the changes were transparently done in the VM, away from the eyes of the programmers.
+An interesting fact is that because Erlang concurrency is all about isolated processes, it took no conceptual change at the language level
+to bring true parallelism to the language. All the changes were transparently done in the VM, away from the eyes of the programmers.
 
+To make it efficient, it made sense for processes to be started very quickly, to be destroyed very quickly and to be able to switch them really fast. 
+Having them lightweight was mandatory to achieve this. It was also mandatory because you didn't want to have things like process pools 
+(a fixed amount of processes you split the work between.) Instead, it would be much easier to design programs that could use as many processes as they need.
 
-To make it efficient, it made sense for processes to be started very quickly, to be destroyed very quickly and to be able to switch them really fast. Having them lightweight was mandatory to achieve this. It was also mandatory because you didn't want to have things like process pools (a fixed amount of processes you split the work between.) Instead, it would be much easier to design programs that could use as many processes as they need.
-
-Anyway, to get back to small processes, because telephony applications needed a lot of reliability, it was decided that the cleanest way to do things was to forbid processes from sharing memory. Shared memory could leave things in an inconsistent state after some crashes (especially on data shared across different nodes) and had some complications. Instead, processes should communicate by sending messages where all the data is copied. This would risk being slower, but safer.
-
+Anyway, to get back to small processes, because telephony applications needed a lot of reliability, it was decided that the cleanest way to do things was to
+forbid processes from sharing memory. Shared memory could leave things in an inconsistent state after some crashes (especially on data shared across different nodes)
+and had some complications. Instead, processes should communicate by sending messages where all the data is copied. This would risk being slower, but safer.
 
 Alright, so it was decided that lightweight processes with asynchronous message passing were the approach to take for Erlang. How to make this work? Well, first of all, the operating system can't be trusted to handle the processes. Operating systems have many different ways to handle processes, and their performance varies a lot. Most if not all of them are too slow or too heavy for what is needed by standard Erlang applications. By doing this in the VM, the Erlang implementers keep control of optimization and reliability. Nowadays, Erlang's processes take about 300 words of memory each and can be created in a matter of microseconds—not something doable on major operating systems these days.
-
 
 To handle all these potential processes your programs could create, the VM starts one thread per core which acts as a scheduler. Each of these schedulers has a run queue, or a list of Erlang processes on which to spend a slice of time. When one of the schedulers has too many tasks in its run queue, some are migrated to another one. This is to say each Erlang VM takes care of doing all the load-balancing and the programmer doesn't need to worry about it. There are some other optimizations that are done, such as limiting the rate at which messages can be sent on overloaded processes in order to regulate and distribute the load.
 
 Your parallel program only goes as fast as its slowest sequential part.
-
-The difficulty of obtaining linear scaling is not due to the language itself, but rather to the nature of the problems to solve. Problems that scale very well are often said to be embarrassingly parallel. (raytracing)
+The difficulty of obtaining linear scaling is not due to the language itself, but rather to the nature of the problems to solve.
+Problems that scale very well are often said to be embarrassingly parallel. (raytracing)
 
 https://blog.stenmans.org/theBeamBook/#CH-Scheduling
 
-##
+## One core and multi-core systems
 
-A CPU core is a CPU’s processor. In the old days, every processor had just one core that could focus on one task at a time. Today, CPUs have been two and 18 cores, each of which can work on a different task. As you can see in our CPU Benchmarks Hierarchy, that can have a huge impact on performance. 
+A CPU core is a CPU’s processor. In the old days, every processor had just one core that could focus on one task at a time. Today, CPUs have been two
+and 18 cores, each of which can work on a different task. As you can see in our CPU Benchmarks Hierarchy, that can have a huge impact on performance. 
 
-A core can work on one task, while another core works a different task, so the more cores a CPU has, the more efficient it is. Many processors, especially those in laptops, have two cores, but some laptop CPUs (known as mobile CPUs), such as Intel’s 8th Generation processors, have four. You should shoot for at least four cores in your machine if you can afford it.
+A core can work on one task, while another core works a different task, so the more cores a CPU has, the more efficient it is.
+Many processors, especially those in laptops, have two cores, but some laptop CPUs (known as mobile CPUs), such as Intel’s 8th Generation processors, have four.
 
-Most processors can use a process called simultaneous multithreading or, if it’s an Intel processor, Hyper-threading (the two terms mean the same thing) to split a core into virtual cores, which are called threads. For example, AMD CPUs with four cores use simultaneous multithreading to provide eight threads, and most Intel CPUs with two cores use Hyper-threading to provide four threads.
+Most processors can use a process called simultaneous multithreading or, if it’s an Intel processor, Hyper-threading (the two terms mean the same thing)
+to split a core into virtual cores, which are called threads. For example, AMD CPUs with four cores use simultaneous multithreading to provide eight threads,
+and most Intel CPUs with two cores use Hyper-threading to provide four threads.
 
-Some apps take better advantage of multiple threads than others. Lightly-threaded apps, like games, don't benefit from a lot of cores, while most video editing and animation programs can run much faster with extra threads.
+Some apps take better advantage of multiple threads than others. Lightly-threaded apps, like games, don't benefit from a lot of cores,
+while most video editing and animation programs can run much faster with extra threads.
 
 ##
 
@@ -55,7 +69,7 @@ https://www.reddit.com/r/learnprogramming/comments/va0tpm/how_is_multithreading_
 Advanced Programmable Interrupt Controller APIC
 https://en.wikipedia.org/wiki/Advanced_Programmable_Interrupt_Controller
 
-## linux process
+## What is linux process
 
 In many operating systems, a common design paradigm is to separate
 high-level policies from their low-level mechanisms [L+75]. You can
@@ -66,20 +80,15 @@ which process should the operating system run right now? Separating the
 two allows one easily to change policies without having to rethink the
 mechanism and is thus a form of modularity, a general software design
 principle.
-gram is currently being executed; similarly a stack pointer and associated
 
 In order to virtualize the CPU, the operating system needs to somehow
 share the physical CPU among many jobs running seemingly at the same
 time. The basic idea is simple: run one process for a little while, then
 run another one, and so forth. By time sharing the CPU in this manner,
 virtualization is achieved.
-There are a few challenges, however, in building such virtualization
 
-virtualization is achieved.
-There are a few challenges, however, in building such virtualization
-machinery. The first is performance: how can we implement virtualiza-
-tion without adding excessive overhead to the system? The second is
-control: how can we run processes efficiently while retaining control over
+There are a few challenges, however, in building such virtualization machinery. The first is performance: how can we implement virtualiza-
+tion without adding excessive overhead to the system? The second is control: how can we run processes efficiently while retaining control over
 the CPU? Control is particularly important to the OS, as it is in charge of
 resources; without control, a process could simply run forever and take
 over the machine, or access information that it should not be allowed to
@@ -107,7 +116,6 @@ Special instructions to trap into the kernel and return-from-trap back to
 user-mode programs are also provided, as well instructions that allow the
 OS to tell the hardware where the trap table resides in memory.
 
-concise subset of around twenty calls.
 To execute a system call, a program must execute a special trap instruc-
 tion. This instruction simultaneously jumps into the kernel and raises the
 privilege level to kernel mode; once in the kernel, the system can now per-
@@ -125,7 +133,6 @@ trap will pop these values off the stack and resume execution of the user-
 mode program (see the Intel systems manuals [I11] for details). Other
 hardware systems use different conventions, but the basic concepts are
 similar across platforms.
-There is one important detail left out of this discussion: how does the
 
 Problem #2: Switching Between Processes
 The next problem with direct execution is achieving a switch between
@@ -245,7 +252,6 @@ https://hadar.gr/2017/lightweight-goroutines
 https://stackoverflow.com/questions/24599645/how-do-goroutines-work-or-goroutines-and-os-threads-relation
 
 wiki go
-
 
 
 https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
