@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-12-16T16:36:41+03:00</updated><id>/feed.xml</id><title type="html">TomDev24 Blog</title><subtitle>sic parvis magna</subtitle><author><name>TomDev</name><email>tommog2499@gmail.com</email></author><entry xml:lang="ru"><title type="html">‘Postman не нужен, родной’ или используем cURL для API запросов</title><link href="/programming/2022/02/01/curl_as_postman_ru.html" rel="alternate" type="text/html" title="‘Postman не нужен, родной’ или используем cURL для API запросов" /><published>2022-02-01T00:00:00+03:00</published><updated>2022-02-01T00:00:00+03:00</updated><id>/programming/2022/02/01/curl_as_postman_ru</id><content type="html" xml:base="/programming/2022/02/01/curl_as_postman_ru.html"><![CDATA[<p>Давайте рассмотрим, как с помощью cURL можно делать <code class="language-plaintext highlighter-rouge">GET, POST, PUT, PATCH, and DELETE</code> http запросы.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-12-16T20:47:34+03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">TomDev24 Blog</title><subtitle>sic parvis magna</subtitle><author><name>TomDev</name><email>tommog2499@gmail.com</email></author><entry xml:lang="ru"><title type="html">‘Postman не нужен, родной’ или используем cURL для API запросов</title><link href="http://localhost:4000/programming/2022/02/01/curl_as_postman_ru.html" rel="alternate" type="text/html" title="‘Postman не нужен, родной’ или используем cURL для API запросов" /><published>2022-02-01T00:00:00+03:00</published><updated>2022-02-01T00:00:00+03:00</updated><id>http://localhost:4000/programming/2022/02/01/curl_as_postman_ru</id><content type="html" xml:base="http://localhost:4000/programming/2022/02/01/curl_as_postman_ru.html"><![CDATA[<p>Давайте рассмотрим, как с помощью cURL можно делать <code class="language-plaintext highlighter-rouge">GET, POST, PUT, PATCH, and DELETE</code> http запросы.
 Для примеров будем использовать <a href="https://jsonplaceholder.typicode.com">jsonplaceholder</a></p>
 
 <h3 id="флаги-curl">Флаги cURL</h3>
@@ -117,10 +117,11 @@ curl \
   <li>https://github.com/curl/curl/blob/master/docs/MANUAL.md</li>
   <li>https://man7.org/linux/man-pages/man1/curl.1.html</li>
   <li>https://dev.to/zaerald/using-vim-as-your-shell-command-line-scratch-1lcl</li>
-</ul>]]></content><author><name>TomDev</name><email>tommog2499@gmail.com</email></author><category term="programming" /><summary type="html"><![CDATA[Давайте рассмотрим, как с помощью cURL можно делать GET, POST, PUT, PATCH, and DELETE http запросы. Для примеров будем использовать jsonplaceholder]]></summary></entry><entry xml:lang="ru"><title type="html">Псевдо 3D с помощью Raycasting</title><link href="/programming/2021/01/20/raycast_ru.html" rel="alternate" type="text/html" title="Псевдо 3D с помощью Raycasting" /><published>2021-01-20T00:00:00+03:00</published><updated>2021-01-20T00:00:00+03:00</updated><id>/programming/2021/01/20/raycast_ru</id><content type="html" xml:base="/programming/2021/01/20/raycast_ru.html"><![CDATA[<p>Сегодня мы рассмотрим алгоритм, который (возможно) впервые был использован в игре Wolfenstein 3D 1992 года.</p>
+</ul>]]></content><author><name>TomDev</name><email>tommog2499@gmail.com</email></author><category term="programming" /><summary type="html"><![CDATA[Давайте рассмотрим, как с помощью cURL можно делать GET, POST, PUT, PATCH, and DELETE http запросы. Для примеров будем использовать jsonplaceholder]]></summary></entry><entry xml:lang="ru"><title type="html">Псевдо 3D с помощью Raycasting</title><link href="http://localhost:4000/programming/2021/01/20/raycast_ru.html" rel="alternate" type="text/html" title="Псевдо 3D с помощью Raycasting" /><published>2021-01-20T00:00:00+03:00</published><updated>2021-01-20T00:00:00+03:00</updated><id>http://localhost:4000/programming/2021/01/20/raycast_ru</id><content type="html" xml:base="http://localhost:4000/programming/2021/01/20/raycast_ru.html"><![CDATA[<p>Сегодня мы рассмотрим алгоритм, который был использован в игре Wolfenstein 3D для имитации 3D пространства.</p>
 
-<p>Ray casting можно перевести как “бросание лучей” и это на самом деле достаточно хорошее описание. По сути, весь
-алгоритм сводится к тому, что мы бросаем N-ое количество лучей и на основание расстояния каждого луча отображаем вертикальную линию.</p>
+<p>Ray casting можно перевести как “бросание лучей”, что хорошо выражает суть алгоритма. Весь
+алгоритм сводится к тому, что мы бросаем N-ое количество лучей и на основание расстояния каждого луча (от начала луча до первого препятствия)
+отображаем соответствующую вертикальную линию на экране.</p>
 
 <p>Итак, наши действующие лица:</p>
 <ul>
@@ -128,9 +129,8 @@ curl \
   <li>Игрок который может передвигаться по 2D плоскоcти</li>
 </ul>
 
-<p>Для простоты, карту будем представлять в виде 2-мерного массива 10 на 10 (хотя есть варианты по оптимальнее) где 1 и 0 означают:<br />
-1 - ячейка заполнена
-0 - пустое место</p>
+<p>Для простоты, карту будем представлять в виде 2-мерного массива 10 на 10 (хотя есть варианты по оптимальнее)<br />
+где 1 - cтена и 0 - пустое место:</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">world_map</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
     <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
@@ -145,15 +145,20 @@ curl \
 <span class="p">]</span>
 </code></pre></div></div>
 
-<p>Размер “ячейки” возьмем за 80 пикселей (она у нас квадратная). Так как у нас карта 10x10 ячеек, удобно сделать так, чтобы размер экран был
-800x800(то есть мы просто домножили на размер ячейки)</p>
+<p>Размер “ячейки” возьмем за 80 на 80 пикселей. Так как у нас карта 10x10 ячеек, удобно сделать так, чтобы размер экрана был
+800x800(10 * 80 x 10 * 80)</p>
 
+<p>Поместим вышеуказанные параметры в словарь <code class="language-plaintext highlighter-rouge">config</code>:</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="sh">"</span><span class="s">screen_w</span><span class="sh">"</span> <span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
     <span class="sh">"</span><span class="s">screen_h</span><span class="sh">"</span> <span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
     <span class="sh">'</span><span class="s">fps</span><span class="sh">'</span> <span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
     <span class="sh">'</span><span class="s">tile</span><span class="sh">'</span> <span class="p">:</span> <span class="mi">80</span>
 <span class="p">}</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">grey</span><span class="sh">'</span> <span class="p">:</span> <span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">220</span><span class="p">)</span>
+	<span class="c1">#...
+</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>Базовые вещи, связанные с pygame я опускаю. Cоздав игровой цикл, поместим внутри него функцию, которая будет отрисовывать карту</p>
@@ -162,6 +167,188 @@ curl \
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">world_map</span><span class="p">)):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">world_map</span><span class="p">[</span><span class="n">y</span><span class="p">])):</span>
             <span class="k">if</span> <span class="n">world_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="nf">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="sh">'</span><span class="s">grey</span><span class="sh">'</span><span class="p">],</span> \
+	<span class="c1"># в координате (x, y), нарисуй квадрат с шириной и высотой config['tile']
+</span>                <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="nf">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="sh">'</span><span class="s">grey</span><span class="sh">'</span><span class="p">],</span> \
                     <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">y</span> <span class="o">*</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
-</code></pre></div></div>]]></content><author><name>TomDev</name><email>tommog2499@gmail.com</email></author><category term="programming" /><summary type="html"><![CDATA[Сегодня мы рассмотрим алгоритм, который (возможно) впервые был использован в игре Wolfenstein 3D 1992 года.]]></summary></entry></feed>
+</code></pre></div></div>
+
+<p>Функция <code class="language-plaintext highlighter-rouge">draw_map()</code> рисует нашу 2D карту из world_map, получается такой вид сверху на наш игровой мир. Данная функция 
+отлично показывает, что мы “находимся” в 2D мире.</p>
+
+<p>Давайте же добавим игрока в нашу игру. Для начала создадим для него словарь конфигурации</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">pos_x</span><span class="sh">'</span> <span class="p">:</span> <span class="nf">int</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">screen_w</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="c1"># начальная позиция игрока по координате x
+</span>    <span class="sh">'</span><span class="s">pos_y</span><span class="sh">'</span> <span class="p">:</span> <span class="nf">int</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">screen_h</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="c1"># начальная позиция игрока по координате y
+</span>    <span class="sh">'</span><span class="s">angle</span><span class="sh">'</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># угол поворота игрока в радианах, 0 - направление прямо на восток как и тригонометрическом круге.
+</span>    <span class="sh">'</span><span class="s">speed</span><span class="sh">'</span> <span class="p">:</span> <span class="mi">5</span>  <span class="c1"># скорость игрока
+</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Само игрока можно описать в отдельном классе:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Player</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="n">player_config</span><span class="p">[</span><span class="sh">'</span><span class="s">pos_x</span><span class="sh">'</span><span class="p">]</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="n">player_config</span><span class="p">[</span><span class="sh">'</span><span class="s">pos_y</span><span class="sh">'</span><span class="p">]</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">player_config</span><span class="p">[</span><span class="sh">'</span><span class="s">angle</span><span class="sh">'</span><span class="p">]</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">player_config</span><span class="p">[</span><span class="sh">'</span><span class="s">speed</span><span class="sh">'</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pos</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="nf">return </span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">pos_y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">movement</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">sin</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">cos</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">pygame</span><span class="p">.</span><span class="n">key</span><span class="p">.</span><span class="nf">get_pressed</span><span class="p">()</span>
+
+        <span class="c1">#формулы привидения, и тригонометричкский круг на кординтах pygame
+</span>        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="p">.</span><span class="n">K_w</span><span class="p">]:</span>
+	<span class="c1"># идем вперед
+</span>            <span class="n">self</span><span class="p">.</span><span class="n">pos_x</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">cos</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pos_y</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">sin</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="p">.</span><span class="n">K_s</span><span class="p">]:</span>
+	<span class="c1"># идем назад
+</span>            <span class="n">self</span><span class="p">.</span><span class="n">pos_x</span> <span class="o">+=</span> <span class="o">-</span><span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">cos</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pos_y</span> <span class="o">+=</span> <span class="o">-</span><span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">sin</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="p">.</span><span class="n">K_a</span><span class="p">]:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pos_x</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">sin</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pos_y</span> <span class="o">+=</span> <span class="o">-</span><span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">cos</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="p">.</span><span class="n">K_d</span><span class="p">]:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pos_x</span> <span class="o">+=</span> <span class="o">-</span><span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">sin</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pos_y</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">cos</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="p">.</span><span class="n">K_LEFT</span><span class="p">]:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">angle</span> <span class="o">-=</span> <span class="mf">0.05</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="p">.</span><span class="n">K_RIGHT</span><span class="p">]:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">angle</span> <span class="o">+=</span> <span class="mf">0.05</span>
+</code></pre></div></div>
+
+<p>Самое важное в этом классе метод <code class="language-plaintext highlighter-rouge">movement()</code>, давайте рассмотрим как он работает.</p>
+
+<p>Если бы мы делали 2D управление, то все было бы банально: нажали стрелку вниз, увеличили <code class="language-plaintext highlighter-rouge">self.pos_y</code>. Нажали
+стрелку вправо, увеличили <code class="language-plaintext highlighter-rouge">self.pos_x</code>.<br />
+В нашей же псевдо-3D игре, нужно чтоб при нажатии стрелки верх, персонаж шел в направлении куда он смотрит (<code class="language-plaintext highlighter-rouge">self.angle</code>), а при нажатии
+стрелки влево или вправо, персонаж должен двигаться по линии перпендикулярной его направлению.</p>
+
+<p>Итак, вначале мы рассчитываем <code class="language-plaintext highlighter-rouge">sin и cos</code> угла поворота нашего персонажа. Эти sin и cos, есть нечто иное как вектор направления нашего
+персонажа, поэтому нам достаточно растянуть этот вектор умножением на скорость игрока (self.speed), и прибавить полученный вектор,
+к вектору нашего местоположения <code class="language-plaintext highlighter-rouge">([self.pos_x, self.pos_y])</code>. Таким образом мы будем двигаться вперед (к точке [sin, cos] на окружности).</p>
+
+<p>Движения влево и вправо, вытекают из формул приведения. То есть: если направление игрока <code class="language-plaintext highlighter-rouge">[cos(self.angle), sin(self.angle)]</code>,
+то движение вправо есть движение по перпендикулярной линии, то есть под уголом 90 градусов, тогда получаем по формуле приведения
+<code class="language-plaintext highlighter-rouge">cos(p/2 + self.angle) = -sin(self.angle)</code> и <code class="language-plaintext highlighter-rouge">sin(p/2 + self.angle) = cos(self.angle)</code>.</p>
+
+<p>Идти назад довольно просто, ведь это противоположное направление переда(куда смотрит игрок), поэтому мы можем просто инвертировать 
+вектор направления умножив его на отрицательную скорость.</p>
+
+<p>Вы можете легко убедиться, что мы рассчитываем правильные направления с помощью
+<a href="https://www.mathsisfun.com/algebra/trig-interactive-unit-circle.html">интерактивного тригонометрического круга</a></p>
+
+<p>Что ж, теперь когда у нас есть игрок, давайте создадим простой метод отрисовки его направления на 2D карте:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">draw_main_ray</span><span class="p">():</span>
+    <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="nf">line</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">],</span> <span class="n">player</span><span class="p">.</span><span class="n">pos</span><span class="p">,</span> <span class="p">(</span>
+        <span class="n">player</span><span class="p">.</span><span class="n">pos_x</span> <span class="o">+</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">screen_w</span><span class="sh">'</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">player</span><span class="p">.</span><span class="n">angle</span><span class="p">),</span>
+        <span class="n">player</span><span class="p">.</span><span class="n">pos_y</span> <span class="o">+</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">screen_w</span><span class="sh">'</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">player</span><span class="p">.</span><span class="n">angle</span><span class="p">)</span>
+    <span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Итак, наша игра до сих пор в 2D, и наш игровой цикл выглядит так:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+	<span class="c1">#...
+</span>    <span class="n">screen</span><span class="p">.</span><span class="nf">fill</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="sh">'</span><span class="s">black</span><span class="sh">'</span><span class="p">])</span>
+    <span class="nf">draw_map</span><span class="p">()</span>
+    <span class="n">player</span><span class="p">.</span><span class="nf">movement</span><span class="p">()</span>
+    <span class="nf">draw_main_ray</span><span class="p">()</span>
+	<span class="c1">#...
+</span></code></pre></div></div>
+
+<p>Настало время реализовать алгоритм raycasting. Для начала обьявим несколько вспомогательных переменных:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FOV</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span>	<span class="c1"># Угол обзора
+</span><span class="n">HALF_FOV</span> <span class="o">=</span> <span class="n">FOV</span> <span class="o">/</span> <span class="mi">2</span>	<span class="c1"># Половина угла обзора
+</span><span class="n">RAYS</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">screen_w</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>	<span class="c1"># Количество пускаемых лучей. Здесь ширина каждой вертикальной линии, будет равна 10 
+# Чем шире вертикальная линия, тем выше производительность
+</span><span class="n">DELTA_ANGLE</span> <span class="o">=</span> <span class="n">FOV</span> <span class="o">/</span> <span class="n">RAYS</span>	<span class="c1"># Каждая вертикальная линия занимает определенную ширину на экране, а также определенную часть FOV
+</span><span class="n">MAX_DEPTH</span> <span class="o">=</span> <span class="mi">800</span>	<span class="c1"># Максимальная длина raycast луча
+</span><span class="n">DIST</span> <span class="o">=</span> <span class="n">RAYS</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="p">.</span><span class="nf">tan</span><span class="p">(</span><span class="n">HALF_FOV</span><span class="p">))</span>
+<span class="n">PROJ_COEFF</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">DIST</span> <span class="o">*</span> <span class="n">config</span><span class="p">[</span><span class="sh">"</span><span class="s">tile</span><span class="sh">"</span><span class="p">]</span> <span class="c1"># multiplied by 3 to make projection bigger
+</span><span class="n">SCALE</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">screen_w</span><span class="sh">'</span><span class="p">]</span> <span class="o">//</span> <span class="n">RAYS</span> <span class="c1"># Ширина вертикальной линии
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">raycast</span><span class="p">():</span>
+    <span class="n">cur_angle</span> <span class="o">=</span> <span class="n">player</span><span class="p">.</span><span class="n">angle</span> <span class="o">-</span> <span class="n">HALF_FOV</span>
+    <span class="n">xo</span><span class="p">,</span> <span class="n">yo</span> <span class="o">=</span> <span class="n">player</span><span class="p">.</span><span class="n">pos</span>
+
+    <span class="k">for</span> <span class="n">ray</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">RAYS</span><span class="p">):</span>
+        <span class="n">cos_a</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">cur_angle</span><span class="p">)</span>
+        <span class="n">sin_a</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">cur_angle</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">depth</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">MAX_DEPTH</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">xo</span> <span class="o">+</span> <span class="n">depth</span> <span class="o">*</span> <span class="n">cos_a</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">yo</span> <span class="o">+</span> <span class="n">depth</span> <span class="o">*</span> <span class="n">sin_a</span><span class="p">)</span>
+	    <span class="c1"># 2d отрисовка raycast луча
+</span>            <span class="c1">#pygame.draw.line(screen, colors['white'], player.pos, (x, y), 2)
+</span>            <span class="k">if</span> <span class="n">world_map</span><span class="p">[</span><span class="nf">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">//</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">]][</span><span class="nf">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">//</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">tile</span><span class="sh">'</span><span class="p">]]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">depth</span> <span class="o">*=</span> <span class="n">math</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">player</span><span class="p">.</span><span class="n">angle</span> <span class="o">-</span> <span class="n">cur_angle</span><span class="p">)</span> <span class="c1"># fish eye fix
+</span>                <span class="n">proj_height</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">proj_height</span> <span class="o">=</span> <span class="n">PROJ_COEFF</span> <span class="o">/</span> <span class="n">depth</span>
+                <span class="c1">#Rect(left, top, width, height)
+</span>                <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="nf">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="sh">'</span><span class="s">white</span><span class="sh">'</span><span class="p">],</span> 
+                    <span class="p">(</span><span class="n">ray</span> <span class="o">*</span> <span class="n">SCALE</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">screen_h</span><span class="sh">'</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">proj_height</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">SCALE</span><span class="p">,</span> <span class="n">proj_height</span> <span class="p">))</span>
+                <span class="k">break</span>
+        <span class="n">cur_angle</span> <span class="o">+=</span> <span class="n">DELTA_ANGLE</span>
+</code></pre></div></div>
+
+<p>Давайте рассмотрим как работает эта функция, и какую роль в ней играют <code class="language-plaintext highlighter-rouge">DIST</code> и <code class="language-plaintext highlighter-rouge">PROJ_COEFF</code></p>
+
+<p>Итак, у нас есть угол обзора FOV, для самой четкой картинки мы можем выпускать столько же лучей, сколько у нас градусов
+в FOV, но это тяжело переваривает python. Поэтому у нас есть переменная DELTA_ANGLE, которая определяет диапазон, через который мы пускаем лучи.</p>
+
+<p><code class="language-plaintext highlighter-rouge">cur_angle</code> вначале равняется крайнему левому лучу FOV. Далее у нас идет цикл, который отработает RAYS(количество лучей) раз.
+На каждой итерации этого цикла мы будем рассчитывать sin и cos луча текущего угла <code class="language-plaintext highlighter-rouge">cur_angle</code>, в конце же итерации мы увеличиваем
+текущий угол на DELTA_ANGLE (а могли бы увеличивать на 1, если б RAYS==FOV и мы писали на C/C++).</p>
+
+<p><img src="/assets/imgs/raycast/Rays.png" alt="FOV" /></p>
+
+<p>Затем идет конструкция <code class="language-plaintext highlighter-rouge">for depth in range(MAX_DEPTH)</code>, которая каждый раз увеличивает длину нашего луча(depth) на 1, до тех пор
+пока он не столкнется со стеной или же не достигнет длины MAX_DEPTH. Поскольку <code class="language-plaintext highlighter-rouge">cos_a и sin_a</code> являются вектором направления луча,
+мы увеличиваем этот единичный вектор умножением на depth и прибавляем его к вектору местоположения игрока <code class="language-plaintext highlighter-rouge">[xo, yo]</code>. Так мы получаем,
+координаты конца луча [x, y], как же определить попадают они в стенку или нет? Все просто, сначала мы переходим из пиксельной 
+системы измерения к клеточной, для этого делим координаты на размер ячейки(<code class="language-plaintext highlighter-rouge">config['tile']</code>). Далее нам остается проверить,
+что находится в <code class="language-plaintext highlighter-rouge">world_map</code> по вычисленным координатам. Если там находится стена, то мы отрисовываем вертикальную линию и выходим из
+цикла <code class="language-plaintext highlighter-rouge">for depth in range(MAX_DEPTH)</code>, если же ничего нет, то цикл продолжается.</p>
+
+<p>Осталось понять “Как же рисуется вертикальная линия? Как определить ее высоту?”. Спешу ответить на эти вопросы.
+Вспомним две вспомогательные переменные:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DIST</span> <span class="o">=</span> <span class="n">RAYS</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="p">.</span><span class="nf">tan</span><span class="p">(</span><span class="n">HALF_FOV</span><span class="p">))</span>
+<span class="n">PROJ_COEFF</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">DIST</span> <span class="o">*</span> <span class="n">config</span><span class="p">[</span><span class="sh">"</span><span class="s">tile</span><span class="sh">"</span><span class="p">]</span> <span class="c1"># multiplied by 3 to make projection bigger
+</span></code></pre></div></div>
+<p><img src="/assets/imgs/raycast/Projection.png" alt="Проекция вид сверху" /></p>
+
+<p>Игрок и его угол обзора образуют экран проекции, длина этого экрана составляет количество лучей(RAYS).
+Нам нужно найти расстояние(DIST) до экрана проекции, чтобы правильно рассчитывать высоту стены(вертикальной линии).</p>
+
+<p><img src="/assets/imgs/raycast/Projection2.png" alt="Проекция вид сбоку" /></p>
+
+<p>Высота стены выводится из подобия треугольников. В коде мы умножаем расстояние луча на <code class="language-plaintext highlighter-rouge">math.cos(player.angle - cur_angle)</code>
+чтобы убрать эффект рыбьего глаза. Далее мы для начала устанавливаем высоту стены 0, в случае если длина не будет больше нуля,
+это позволит нам не рисовать очень далекие стены, если же длина луча больше 0, мы рассчитываем высоту стены с помощью <code class="language-plaintext highlighter-rouge">PROJ_COEF</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">depth</span> <span class="o">*=</span> <span class="n">math</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">player</span><span class="p">.</span><span class="n">angle</span> <span class="o">-</span> <span class="n">cur_angle</span><span class="p">)</span> <span class="c1"># fish eye fix
+</span><span class="n">proj_height</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+	<span class="n">proj_height</span> <span class="o">=</span> <span class="n">PROJ_COEFF</span> <span class="o">/</span> <span class="n">depth</span>
+<span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="nf">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="sh">'</span><span class="s">white</span><span class="sh">'</span><span class="p">],</span> <span class="p">(</span><span class="n">ray</span> <span class="o">*</span> <span class="n">SCALE</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="sh">'</span><span class="s">screen_h</span><span class="sh">'</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">proj_height</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">SCALE</span><span class="p">,</span> <span class="n">proj_height</span> <span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="заключение">Заключение</h3>
+
+<p>Теперь в игровом цикле мы можем убрать все функции связанные с 2D отрисовкой, и использовать вместо них функцию <code class="language-plaintext highlighter-rouge">raycast</code>. Поздравляю,
+вы создали псевдо 3D мир.</p>
+
+<h3 id="источники">Источники</h3>
+
+<ul>
+  <li>https://www.youtube.com/watch?v=SmKBsArp2dI</li>
+  <li>https://lodev.org/cgtutor/raycasting.html</li>
+</ul>]]></content><author><name>TomDev</name><email>tommog2499@gmail.com</email></author><category term="programming" /><summary type="html"><![CDATA[Сегодня мы рассмотрим алгоритм, который был использован в игре Wolfenstein 3D для имитации 3D пространства.]]></summary></entry></feed>
