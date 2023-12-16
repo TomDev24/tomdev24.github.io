@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>‘Postman не нужен, родной’ или используем cURL для API запросов | TomDev24 Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="‘Postman не нужен, родной’ или используем cURL для API запросов" />
+<meta name="author" content="TomDev" />
+<meta property="og:locale" content="ru" />
+<meta name="description" content="Давайте рассмотрим, как с помощью cURL можно делать GET, POST, PUT, PATCH, and DELETE http запросы. Для примеров будем использовать jsonplaceholder" />
+<meta property="og:description" content="Давайте рассмотрим, как с помощью cURL можно делать GET, POST, PUT, PATCH, and DELETE http запросы. Для примеров будем использовать jsonplaceholder" />
+<link rel="canonical" href="/programming/2022/02/01/curl_as_postman_ru.html" />
+<meta property="og:url" content="/programming/2022/02/01/curl_as_postman_ru.html" />
+<meta property="og:site_name" content="TomDev24 Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-01T00:00:00+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="‘Postman не нужен, родной’ или используем cURL для API запросов" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"TomDev"},"dateModified":"2022-02-01T00:00:00+03:00","datePublished":"2022-02-01T00:00:00+03:00","description":"Давайте рассмотрим, как с помощью cURL можно делать GET, POST, PUT, PATCH, and DELETE http запросы. Для примеров будем использовать jsonplaceholder","headline":"‘Postman не нужен, родной’ или используем cURL для API запросов","mainEntityOfPage":{"@type":"WebPage","@id":"/programming/2022/02/01/curl_as_postman_ru.html"},"url":"/programming/2022/02/01/curl_as_postman_ru.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="/assets/css/styles.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="TomDev24 Blog" /></head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">TomDev24 Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+	  
+    	  <a class="page-link" href="/pages/ru/about">Обо мне</a>
+  	  
+    	  <a class="page-link" href="/pages/ru/archive/archive-category">Записи</a>
+  	  
+        </div>
+      </nav></div>
+</header>
+
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <ul class="lang-selector">
+
+
+  <li>
+    <a href="/programming/2022/02/01/curl_as_postman_ru.html" class="lang-switch ru">ru</a>
+  </li>
+
+</ul>
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">&#39;Postman не нужен, родной&#39; или используем cURL для API запросов</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-02-01T00:00:00+03:00" itemprop="datePublished">Feb 1, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Давайте рассмотрим, как с помощью cURL можно делать <code class="language-plaintext highlighter-rouge">GET, POST, PUT, PATCH, and DELETE</code> http запросы.
+Для примеров будем использовать <a href="https://jsonplaceholder.typicode.com">jsonplaceholder</a></p>
+
+<h3 id="флаги-curl">Флаги cURL</h3>
+
+<ul>
+  <li>-X –request - Метод запроса</li>
+  <li>-d –data - Отправить определенные данные</li>
+  <li>-H –header - Заголовок HTTP запроса</li>
+  <li>-i –include - Отобразить заголовки ответа</li>
+</ul>
+
+<h3 id="get">GET</h3>
+
+<p>Get запросы довольно тривиальны. Следущие два запроса совершенно индентичны:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl https://jsonplaceholder.typicode.com/posts
+<span class="nv">$ </span>curl <span class="nt">-X</span> GET https://jsonplaceholder.typicode.com/posts
+</code></pre></div></div>
+
+<h3 id="post">POST</h3>
+
+<p>С помощью флага -X указываем POST запрос, а флаг -d указывает данные. Мы можем отправлять данные как закадированные в url(первый пример),
+так и json данные(второй пример).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"userId=5&amp;title=Stuff and Things&amp;body=An amazing blog post about both stuff and things."</span> https://jsonplaceholder.typicode.com/posts
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-d</span> <span class="s1">'{"userId": 5, "title": "Stuff and Things", "body": "An amazing blog post about both stuff and things."}'</span>
+https://jsonplaceholder.typicode.com/posts
+</code></pre></div></div>
+
+<p>Как видим для JSON запросов нужно указывать заголовок с помощью флага -H.</p>
+
+<h3 id="put">PUT</h3>
+
+<p>Как мы помним, PUT позволяет нам обновлять запись, при это нам всегда нужно указывать запись целиком в теле, а не определенное ее поле.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> PUT <span class="nt">-d</span> <span class="s2">"userId=1&amp;title=Something else&amp;body=A new body"</span> https://jsonplaceholder.typicode.com/posts/1
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> PUT <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-d</span> <span class="s1">'{"userId": 1, "title": "Something else", "body": "A new body"}'</span> https://jsonplaceholder.typicode.com/posts/1
+</code></pre></div></div>
+
+<h3 id="patch">PATCH</h3>
+
+<p>В отличие от PUT, PATCH не требует от нас указывать всю запись целиком, а лишь то поле, которое мы хотим изменить</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> PATCH <span class="nt">-d</span> <span class="s2">"title='Only change the title'"</span> https://jsonplaceholder.typicode.com/posts/1
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> PATCH <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-d</span> <span class="s1">'{"title": "Only change the title"}'</span> https://jsonplaceholder.typicode.com/posts/1
+</code></pre></div></div>
+
+<h3 id="delete">DELETE</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> DELETE https://jsonplaceholder.typicode.com/posts/1
+</code></pre></div></div>
+
+<h3 id="aутентификация">Aутентификация</h3>
+
+<p>В зависимости от метода авторизации в API, мы можем указывать данные аутентификации в заголовке:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Authorization: Bearer &lt;JWT_TOKEN&gt;"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"x-jwt-assertion: &lt;JWT_TOKEN&gt;"</span> <span class="se">\</span>
+  <span class="nt">-X</span> POST <span class="se">\</span>
+  <span class="nt">-d</span>  <span class="s1">'{"key1" : "value1", "key2" : "value2"}'</span> <span class="se">\</span>
+  https://example.com/
+</code></pre></div></div>
+
+<h3 id="vim-как-окружение-для-тестирования-api">Vim, как окружение для тестирования API</h3>
+
+<p>Что самое прекрасное в cURL запросах, так это то что мы можем легко их поместить в текстовый файл:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//req.txt пример текстового файла с запросами
+curl https://jsonplaceholder.typicode.com/posts
+curl https://jsonplaceholder.typicode.com/users
+curl https://jsonplaceholder.typicode.com/posts/1
+
+curl \
+    -X PUT \
+    -H "Content-Type: application/json" -d \
+    '{"userId": 1, "title": "Something else", "body": "A new body"}' https://jsonplaceholder.typicode.com/posts/1
+
+</code></pre></div></div>
+
+<p>И уже в vim наводя курсор на нужный запроc, выполнять его <code class="language-plaintext highlighter-rouge">:.w !bash</code>. И даже выводить результат в другое окно vim <code class="language-plaintext highlighter-rouge">:.w !bash | vi -</code><br />
+Ну и вишенка на торте: можно выполнять запросы, которые занимают несколько строк, для этого нужно выделить эти строки в Visual Mode и затем выполнить</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>:'&lt;,'&gt;w !bash
+</code></pre></div></div>
+
+<p>Ну и конечно, ничто не мешает нам открыть этот файл в том же Python, и по каждой строчке делать запрос, и далее обрабатывать результат и возможно 
+сравнивать его с чем то.</p>
+
+<h3 id="как-редактивировать-curl-запросы-прямо-в-терминале">Как редактивировать cURL запросы прямо в терминале</h3>
+
+<p>В Linux есть полезная команда <code class="language-plaintext highlighter-rouge">fc</code>, позволяющая редактивировать последнюю выполненную команду. При этом, редактивироваться сообщение будет в редакторе по
+умолчанию, указанный в .bashrc <code class="language-plaintext highlighter-rouge">export EDITOR=nvim</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">fc</span>
+</code></pre></div></div>
+
+<p>При закрытие нашего редактора, команда будет автоматически выполнена.</p>
+
+<p>Если мы не хотим выполнять команду/запрос сразу, а вначале его отредактвировать. То мы можем перейти в начало ввода команды <code class="language-plaintext highlighter-rouge">ctrl+a</code> и поставить <code class="language-plaintext highlighter-rouge">#</code>, что
+сделает нашу команду коментарием. Ну и после соотвестенно мы можем выполнить <code class="language-plaintext highlighter-rouge">fc</code> и отредактивировать команду.</p>
+
+<h3 id="заключение">Заключение</h3>
+
+<p>Postman часто используют для автоматизации тестирования API. Но как мы видим, возможность делать запросы через cURL и возможность сохранения запросов
+в текстовых файлах (которые можно легко выполнить в vim, или python/bash скрипте), позволяют нам гибко настраивать систему тестирования, без необходимости
+открывать требовательное приложение Postman, которое на минуточку написано на Electron, со всеми вытекающими отсюда последствиями.</p>
+
+<h3 id="источники">Источники</h3>
+
+<ul>
+  <li>https://github.com/curl/curl/blob/master/docs/MANUAL.md</li>
+  <li>https://man7.org/linux/man-pages/man1/curl.1.html</li>
+  <li>https://dev.to/zaerald/using-vim-as-your-shell-command-line-scratch-1lcl</li>
+</ul>
+
+  </div><a class="u-url" href="/programming/2022/02/01/curl_as_postman_ru.html" hidden></a>
+</article>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+	<!--
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+	-->
+        <ul class="contact-list">
+          <li class="p-name">TomDev</li>
+          <li><a class="u-email" href="mailto:tommog2499@gmail.com">tommog2499@gmail.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>sic parvis magna</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li>
+  <a rel="me" href="https://github.com/TomDev24" target="_blank" title="github">
+    <svg class="svg-icon grey">
+      <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+    </svg>
+  </a>
+</li>
+</ul>
+</div>
+
+  </div>
+
+</footer>
+
+</body>
+
+</html>
