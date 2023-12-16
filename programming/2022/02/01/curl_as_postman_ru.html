@@ -87,8 +87,7 @@
 
 <h3 id="post">POST</h3>
 
-<p>С помощью флага -X указываем POST запрос, а флаг -d указывает данные. Мы можем отправлять данные как закадированные в url(первый пример),
-так и json данные(второй пример).</p>
+<p>Мы можем отправлять данные как закодированные в url(первый пример), так и json данные(второй пример).</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"userId=5&amp;title=Stuff and Things&amp;body=An amazing blog post about both stuff and things."</span> https://jsonplaceholder.typicode.com/posts
 </code></pre></div></div>
@@ -101,7 +100,7 @@ https://jsonplaceholder.typicode.com/posts
 
 <h3 id="put">PUT</h3>
 
-<p>Как мы помним, PUT позволяет нам обновлять запись, при это нам всегда нужно указывать запись целиком в теле, а не определенное ее поле.</p>
+<p>Как мы помним, PUT позволяет нам обновлять запись, при это нам всегда нужно указывать в теле запроса запись целиком, а не определенное ее поле.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> PUT <span class="nt">-d</span> <span class="s2">"userId=1&amp;title=Something else&amp;body=A new body"</span> https://jsonplaceholder.typicode.com/posts/1
 </code></pre></div></div>
@@ -152,18 +151,18 @@ curl \
 
 </code></pre></div></div>
 
-<p>И уже в vim наводя курсор на нужный запроc, выполнять его <code class="language-plaintext highlighter-rouge">:.w !bash</code>. И даже выводить результат в другое окно vim <code class="language-plaintext highlighter-rouge">:.w !bash | vi -</code><br />
-Ну и вишенка на торте: можно выполнять запросы, которые занимают несколько строк, для этого нужно выделить эти строки в Visual Mode и затем выполнить</p>
+<p>И уже в vim наводя курсор на нужный запроc, выполнять его командой <code class="language-plaintext highlighter-rouge">:.w !bash</code>. И даже выводить результат в другое окно vim <code class="language-plaintext highlighter-rouge">:.w !bash | vi -</code></p>
+
+<p>Ну и вишенка на торте: можно выполнять запросы, которые занимают несколько строк, для этого нужно выделить эти строки в Visual Mode и затем выполнить</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>:'&lt;,'&gt;w !bash
 </code></pre></div></div>
 
-<p>Ну и конечно, ничто не мешает нам открыть этот файл в том же Python, и по каждой строчке делать запрос, и далее обрабатывать результат и возможно 
-сравнивать его с чем то.</p>
+<p>Ну и конечно, ничто не мешает нам открыть этот файл в том же Python, и по каждой строчке делать запрос, и далее обрабатывать результат.</p>
 
 <h3 id="как-редактивировать-curl-запросы-прямо-в-терминале">Как редактивировать cURL запросы прямо в терминале</h3>
 
 <p>В Linux есть полезная команда <code class="language-plaintext highlighter-rouge">fc</code>, позволяющая редактивировать последнюю выполненную команду. При этом, редактивироваться сообщение будет в редакторе по
-умолчанию, указанный в .bashrc <code class="language-plaintext highlighter-rouge">export EDITOR=nvim</code></p>
+умолчанию, указанный в .bashrc (у меня к примеру стоит строчка <code class="language-plaintext highlighter-rouge">export EDITOR=vim</code>)</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">fc</span>
 </code></pre></div></div>
@@ -171,7 +170,7 @@ curl \
 <p>При закрытие нашего редактора, команда будет автоматически выполнена.</p>
 
 <p>Если мы не хотим выполнять команду/запрос сразу, а вначале его отредактвировать. То мы можем перейти в начало ввода команды <code class="language-plaintext highlighter-rouge">ctrl+a</code> и поставить <code class="language-plaintext highlighter-rouge">#</code>, что
-сделает нашу команду коментарием. Ну и после соотвестенно мы можем выполнить <code class="language-plaintext highlighter-rouge">fc</code> и отредактивировать команду.</p>
+сделает нашу команду коментарием. Ну и после соотвестенно мы можем выполнить <code class="language-plaintext highlighter-rouge">fc</code>.</p>
 
 <h3 id="заключение">Заключение</h3>
 
