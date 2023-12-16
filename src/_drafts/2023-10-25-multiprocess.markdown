@@ -7,25 +7,6 @@ ref: curl_postman
 ---
 
 ## Erlang concurrency, parallelism and virtual machine
-I believe it is important to define the difference between concurrency and parallelism.
-
-For many Erlangers, concurrency refers to the idea of having many actors running independently, but not necessarily all at the same time.
-Parallelism is having actors running exactly at the same time. 
-
-This is to say Erlang had concurrency from the beginning, even when everything was done on a single core processor in the '80s.
-Each Erlang process would have its own slice of time to run, much like desktop applications did before multi-core systems.
-
-Parallelism was still possible back then; all you needed to do was to have a second computer running the code and communicating with the first one. 
-Even then, only two actors could be run in parallel in this setup. Nowadays, multi-core systems allows for parallelism on a single computer
-(with some industrial chips having many dozens of cores) and Erlang takes full advantage of this possibility.
-
-The distinction between concurrency and parallelism is important to make, because many programmers hold the belief that Erlang was ready for multi-core computers years before
-it actually was. Erlang was only adapted to true symmetric multiprocessing in the mid 2000s and only got most of the implementation right
-with the R13B release of the language in 2009
-
-An interesting fact is that because Erlang concurrency is all about isolated processes, it took no conceptual change at the language level
-to bring true parallelism to the language. All the changes were transparently done in the VM, away from the eyes of the programmers.
-
 To make it efficient, it made sense for processes to be started very quickly, to be destroyed very quickly and to be able to switch them really fast. 
 Having them lightweight was mandatory to achieve this. It was also mandatory because you didn't want to have things like process pools 
 (a fixed amount of processes you split the work between.) Instead, it would be much easier to design programs that could use as many processes as they need.
@@ -45,19 +26,6 @@ Problems that scale very well are often said to be embarrassingly parallel. (ray
 https://blog.stenmans.org/theBeamBook/#CH-Scheduling
 
 ## One core and multi-core systems
-
-A CPU core is a CPU’s processor. In the old days, every processor had just one core that could focus on one task at a time. Today, CPUs have been two
-and 18 cores, each of which can work on a different task. As you can see in our CPU Benchmarks Hierarchy, that can have a huge impact on performance. 
-
-A core can work on one task, while another core works a different task, so the more cores a CPU has, the more efficient it is.
-Many processors, especially those in laptops, have two cores, but some laptop CPUs (known as mobile CPUs), such as Intel’s 8th Generation processors, have four.
-
-Most processors can use a process called simultaneous multithreading or, if it’s an Intel processor, Hyper-threading (the two terms mean the same thing)
-to split a core into virtual cores, which are called threads. For example, AMD CPUs with four cores use simultaneous multithreading to provide eight threads,
-and most Intel CPUs with two cores use Hyper-threading to provide four threads.
-
-Some apps take better advantage of multiple threads than others. Lightly-threaded apps, like games, don't benefit from a lot of cores,
-while most video editing and animation programs can run much faster with extra threads.
 
 ##
 
